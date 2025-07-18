@@ -29,7 +29,10 @@ async function main() {
     await prisma.order.upsert({
       where: { id: order.id },
       update: {},
-      create: order,
+      create: {
+        ...order,
+        books: { connect: order.book_ids.map((book) => ({ id: book.id })) },
+      },
     });
   }
 }
