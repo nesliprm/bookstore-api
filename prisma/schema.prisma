@@ -14,6 +14,23 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum ItemType {
+  BOOK
+  RECORD
+}
+
+model Record {
+id String @id @default(uuid())
+title String
+artist String
+year Int
+available Boolean
+genre String
+
+orders Order[]
+}
+
+
 model Book {
   id        String  @id @default(uuid())
   title     String
@@ -35,8 +52,12 @@ model User {
 model Order {
   id String @id @default(uuid())
 
+  order_type ItemType
+
   // Relations by id
-  book_id String
+  book_id String?
+  record_id String?
+
   user_id String
 
   order_date     DateTime
@@ -46,9 +67,11 @@ model Order {
 
   // Additionally, we also get a reference to the related models
   user User @relation(fields: [user_id], references: [id])
-  book Book @relation(fields: [book_id], references: [id])
+  book Book? @relation(fields: [book_id], references: [id])
+  record Record? @relation(fields: [record_id], references: [id])
 
   @@index([book_id])
+  @@index([record_id])
   @@index([user_id])
 
 }
