@@ -1,6 +1,7 @@
 import express from "express";
 import booksRouter from "./routes/books.js";
 import usersRouter from "./routes/users.js";
+import ordersRouter from "./routes/orders.js";
 
 import log from "./middleware/logMiddleware.js";
 
@@ -17,6 +18,7 @@ app.use(log);
 
 app.use("/books", booksRouter);
 app.use("/users", usersRouter);
+app.use("/orders", ordersRouter);
 
 app.get("/", (req, res) => {
   res.send("Hello world!");
